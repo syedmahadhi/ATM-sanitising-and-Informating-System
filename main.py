@@ -3,12 +3,11 @@ from .camera import still
 from .camera import rec
 from .qr import dectector
 from .lcd import lcd_string, GPIO, cleanup
-from .temprature import temp
+from .temprature import sensor
 from .motor import loop
 import time
 import webbrowser
 
-t = 101
 
 rec()
 lcd_string("Enter your card")
@@ -22,8 +21,9 @@ if dectector():
     engine.runAndWait()
     GPIO.cleanup()
     lcd_string(temp())
-
-    if temp() >= t:
+    
+    print "Object Temperature :", sensor.get_object_1()
+    if sensor.get_object_1() >= 100:
         still()
         webbrowser.open(dectector())
         lcd_string(temp()+"High")
