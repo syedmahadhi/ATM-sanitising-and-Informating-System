@@ -1,9 +1,7 @@
-import mlx90614
-from machine import I2C, Pin
-
-i2c = I2C(scl=Pin(5), sda=Pin(4))
-sensor = mlx90614.MLX90614(i2c)
-
-while True:
-    def temp():
-        temp = sensor.read_ambient_temp()
+from smbus2 import SMBus
+from mlx90614 import MLX90614
+bus = SMBus(1)
+sensor = MLX90614(bus, address=0x5A)
+print "Ambient Temperature :", sensor.get_ambient()
+print "Object Temperature :", sensor.get_object_1()
+bus.close()
