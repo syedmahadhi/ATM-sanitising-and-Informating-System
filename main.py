@@ -1,8 +1,8 @@
-from .voice import talk
+from .voice import engine
 from .camera import still
 from .camera import rec
 from .qr import dectector
-from .lcd import clean, pt
+from .lcd import lcd_string, GPIO, cleanup
 from .temprature import temp
 from .motor import loop
 import time
@@ -11,21 +11,25 @@ import webbrowser
 t = 101
 
 rec()
-pt('Enter your card')
+lcd_string("Enter your card")
+engine.say("Enter your card")
+engine.runAndWait()
 if dectector():
     dectector()
-    clean()
-    pt('place your hand')
-    talk('place your hand near thermometer')
-    clean()
-    pt(temp())
+    GPIO.cleanup()
+    lcd_string("place your hand")
+    engine.say("Place your hand")
+    engine.runAndWait()
+    GPIO.cleanup()
+    lcd_string(temp())
 
     if temp() >= t:
         still()
         webbrowser.open(dectector())
-        pt(temp()+'High')
-        talk('Your temperature is high')
-        clean()
+        lcd_string(temp()+"High")
+        engine.say("Your temperature is high")
+        engine.runAndWait()
+        GPIO.cleanup()
     else:
         clean()
 
